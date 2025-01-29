@@ -1,3 +1,4 @@
+import json
 import pytest
 from pages.login_page import LoginPage
 from pages.products_page import ProductsPage
@@ -9,13 +10,24 @@ from utilities.driver_manager import DriverManager
 config = ConfigParser()
 config.read("config/config.ini")
 
+
+def load_test_data(file_path):
+    with open(file_path, 'r') as file:
+        return json.load(file)
+
+
+test_data = load_test_data("test_data/test_data.json")
+
+
 @pytest.fixture
 def driver():
     driver = DriverManager.get_driver()
     yield driver
     driver.quit()
 
-def test_checkout_flow(driver):
+
+@pytest.mark.parametrize("checkout_info", test_data['checkout_info'])
+def test_checkout_flow(driver, checkout_info):
     # Login
     login_page = LoginPage(driver)
     driver.get(config.get("APP", "base_url"))
@@ -32,9 +44,5 @@ def test_checkout_flow(driver):
     
     # Fill checkout info
     checkout_page = CheckoutPage(driver)
-    checkout_page.enter_checkout_info(
-        config.get("CHECKOUT", "first_name"),
-        config.get("CHECKOUT", "last_name"),
-        config.get("CHECKOUT", "zip_code")
-    )
+    checkout_page.enter_checkout_info(checkout_info["first_name"], checkout_info["last_name"], checkout_info["zip_code"])
     assert "checkout-complete.html" in driver.current_url

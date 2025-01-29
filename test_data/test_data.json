@@ -1,0 +1,9 @@
+{
+    "checkout_info": [
+        { "first_name": "John", "last_name": "Doe", "zip_code": "12345" },
+        { "first_name": "Jane", "last_name": "Smith", "zip_code": "67890" },
+        { "first_name": "Michael", "last_name": "Brown", "zip_code": "54321" },
+        { "first_name": "Emily", "last_name": "Davis", "zip_code": "98765" },
+        { "first_name": "David", "last_name": "Johnson", "zip_code": "24680" }
+    ]
+}
